@@ -8,8 +8,8 @@ class Account;
 
 class Card{
 private:
-    string pass;
-    string card_number;
+    char* pass;
+    char* card_number;
     
 public:
 
@@ -27,7 +27,7 @@ class Credit_Card: public Card{
 private:
     double borrowedMoney;
     double limit;
-    string deadline;
+    char* deadline;
     double interestRate;
 
 public:

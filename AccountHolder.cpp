@@ -2,7 +2,7 @@
 #include "AccountHolder.h"
 using namespace std;
 
-AccountHolder::AccountHolder(string user, string pass) : User(user, pass) {}
+AccountHolder::AccountHolder(char* user, char* pass) : User(user, pass) {}
 AccountHolder::AccountHolder() {}
 
 // bool verify(string s1, string s2)

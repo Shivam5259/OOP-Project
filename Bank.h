@@ -14,7 +14,7 @@
 
 using namespace std;
 
-string getCurrentDate();
+char* getCurrentDate();
 int calculateAge(string, string);
 chrono::system_clock::time_point stringToDate(string& dateStr);
 
@@ -27,15 +27,17 @@ private:
 
 
 public:
-    void encrypt_decrypt(string &s);
+    void encrypt_decrypt(char* &s);
 
     void createAcc();
 
     void displayMenu();
 
-    void log_in(string name, string pass);
+    void log_in(char* name, char* pass);
 
     void createAccount();
+
+    void drawInputWindow();
 };
 
 #endif

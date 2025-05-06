@@ -1,22 +1,33 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall
+CXXFLAGS = -Wall -Wextra -g3 -std=c++17
 
-SOURCES = $(wildcard *.cpp)
-OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = my_program
-OUT = my_program.exe
+LIBS = -lraylib -lopengl32 -lgdi32 -lwinmm
 
-all: $(EXECUTABLE)
+SRC_DIR = .
+OBJ_DIR = obj
+OUT_DIR = output
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $(EXECUTABLE)
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-%.o: %.cpp
-	$(CXX) -c $< -o $@
+OUT = $(OUT_DIR)/main.exe
+
+all: $(OUT)
+
+$(OUT_DIR):
+	mkdir -p $(OUT_DIR)
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OUT): $(OBJS) | $(OUT_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run: $(OUT)
 	./$(OUT)
-	del /Q $(OUT)
 
 clean:
-	del /Q $(OBJECTS) $(EXECUTABLE)
+	del /q $(OBJ_DIR)\*.o $(OUT) 2>nul || true

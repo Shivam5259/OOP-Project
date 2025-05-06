@@ -30,19 +30,23 @@ void Account::deposit(double amount)
     }
 }
 
-string Account::getAccNumber()
+char* Account::getAccNumber()
 {
     return acc_number;
 }
 
 Transaction::Transaction(){}
 
-Transaction::Transaction(string s, string t, double a, string d): source(s), type(t), amount(a), date(d) {
-    file=nullptr;
+Transaction::Transaction(char* acc, char* s, char* t, double a, char* d){
+    strncpy(acc_no, acc, sizeof(acc_no));
+    strncpy(source, s, sizeof(source));
+    strncpy(type, t, sizeof(type));
+    amount=a;
+    strncpy(date, d, sizeof(date));
 }
 
 void Transaction::write(){
-    file.open("Transaction.dat", ios::binary | ios::app);
+    ofstream file("Transaction.dat", ios::binary | ios::app);
     if(!file.is_open()){
         cout<<"Unable to open!"<<endl;
         return;
@@ -51,27 +55,29 @@ void Transaction::write(){
     file.close();
 }
 
-void Transaction::read(string source){
-    file.open("Transaction.dat", ios::binary | ios::in);
+void Transaction::read(char* acc, char* source){
+    ifstream file("Transaction.dat", ios::binary | ios::in);
 
-    if(file.is_open()==false){
+    if(!file.is_open()){
         cout<<"Unable to open!"<<endl;
         return;
     }
 
     int n=0;
+    Transaction temp;
 
-    while(file.read(reinterpret_cast<char *> (this), sizeof(Transaction))){
-        if(this->source == source){
+    while(file.read(reinterpret_cast<char *> (&temp), sizeof(Transaction))){
+
+        if(!strcmp(temp.acc_no, acc) && !strcmp(temp.source, source)){
             cout<<"Transaction Number: "<<++n<<endl;
-            cout<<this<<endl;
+            cout<<temp<<endl;
         }
     }
     file.close();
 }
 
 ostream& operator<<(ostream& out, Transaction &t){
-    return(out<<"Source: "<<t.source<<"\tType: "<<t.type<<"\tAmount: "<<t.amount<<"Date: "<<t.date);
+    return(out<<"Source: "<<t.source<<"\tType: "<<t.type<<"\tAmount: "<<t.amount<<"\tDate: "<<t.date);
 }
 
 Transaction::~Transaction(){}

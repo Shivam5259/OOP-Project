@@ -8,18 +8,18 @@ using namespace std;
 
 class Transaction{
     private:
-        string source;
-        string type;
+        char acc_no[25];
+        char source[25];
+        char type[25];
         double amount;
-        string date;
-        fstream file;
+        char date[25];
     
     public:
 
     Transaction();
-    Transaction(string s, string t, double a, string d);
+    Transaction(char* acc_no, char* s, char* t, double a, char* d);
     void write();
-    void read(string);
+    void read(char*, char*);
     friend ostream& operator<<(ostream& out, Transaction &t);
 
     ~Transaction();
@@ -28,8 +28,8 @@ class Transaction{
 class Account{
 private:
     double balance;
-    string acc_number;
-    string pass;
+    char* acc_number;
+    char* pass;
     Card *card;
     int cardCount;
 
@@ -38,7 +38,7 @@ public:
     void transfer(Account &a, double amount);
     void deposit(double amount);
 
-    string getAccNumber();
+    char* getAccNumber();
 };
 
 class Current: public Account{

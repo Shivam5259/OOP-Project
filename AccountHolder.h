@@ -12,13 +12,13 @@ private:
     int accountCount;
     int age;
     double salary;
-    string address;
-    string creationDate;
-    string contact;
-    string accountType;
+    char* address;
+    char* creationDate;
+    char* contact;
+    char* accountType;
 
 public:
-    AccountHolder(string user, string pass);
+    AccountHolder(char* user, char* pass);
     AccountHolder();
 
     // bool verify(string s1, string s2);

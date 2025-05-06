@@ -6,6 +6,7 @@
 #include <chrono>
 #include <sstream>
 #include <iomanip>
+#include "C:\raylib\raylib\src\raylib.h"
 #include "Bank.h"
 #include "Account.h"
 #include "AccountHolder.h"
@@ -13,12 +14,11 @@
 #include "User.h"
 #include "Card.h"
 
-
 using namespace std;
 
-void Bank::encrypt_decrypt(string &s)
+void Bank::encrypt_decrypt(char *(&s))
 {
-    for (int i = 0; i < s.length(); i++)
+    for (int i = 0; s[i] != '\0'; i++)
     {
         s[i] ^= encryption_key;
     }
@@ -47,17 +47,19 @@ void Bank::displayMenu()
     {
     case 1:
     {
-        string username;
+        char username[25];
         cout << "Enter User Name: ";
         cin >> username;
 
-        string password;
+        char *password = new char[25];
         cout << "Enter Password: ";
         cin >> password;
 
         encrypt_decrypt(password);
 
         log_in(username, password);
+        delete[] password;
+        drawInputWindow();
 
         break;
     }
@@ -69,7 +71,7 @@ void Bank::displayMenu()
     }
 }
 
-void Bank::log_in(string name, string pass)
+void Bank::log_in(char *name, char *pass)
 {
     User *u = new AccountHolder;
     ifstream file;
@@ -84,13 +86,15 @@ void Bank::log_in(string name, string pass)
     {
         while (file.read(reinterpret_cast<char *>(u), sizeof(AccountHolder)))
         {
-
-            if (u->getUsername() == name)
+            if (!strcmp(u->getUsername(), name))
             {
+
                 if (u->verifyPass(pass) == true)
                 {
                     user = u;
                     cout << "Logged In Successfully!" << endl;
+                    delete u;
+                    file.close();
                     return;
                 }
             }
@@ -103,9 +107,12 @@ void Bank::log_in(string name, string pass)
 
 void Bank::createAccount()
 {
-    string pass = "shivam123";
+    char *pass = new char[25];
+    char name[25];
+    strcpy(name, "Shivam");
+    strcpy(pass, "shivam123");
     encrypt_decrypt(pass);
-    user = new AccountHolder("Shivam", pass);
+    user = new AccountHolder(name, pass);
 
     ofstream file("User.dat", ios::binary);
 
@@ -119,30 +126,88 @@ void Bank::createAccount()
         file.write(reinterpret_cast<char *>(user), sizeof(AccountHolder));
     }
     file.close();
+    delete[] pass;
 }
 
-string getCurrentDate()
+char *getCurrentDate()
 {
     time_t now = time(0);
-    char buf[20];
+    char *buf = new char[10];
     strftime(buf, sizeof(buf), "%d-%m-%Y", localtime(&now));
-    return string(buf);
+    return buf;
 }
 
-chrono::system_clock::time_point stringToDate(string& dateStr){
+chrono::system_clock::time_point stringToDate(string &dateStr)
+{
     istringstream ss(dateStr);
     tm tm = {};
     ss >> get_time(&tm, "%Y-%m-%d");
     return chrono::system_clock::from_time_t(mktime(&tm));
 }
 
-int calculateAge(string current, string deadline){
+int calculateAge(string current, string deadline)
+{
     auto time1 = stringToDate(current);
     auto time2 = stringToDate(deadline);
 
-    auto duration = time2-time1;
-    int days = chrono::duration_cast<chrono::seconds>(duration).count()/(60*60*24);
+    auto duration = time2 - time1;
+    int days = chrono::duration_cast<chrono::seconds>(duration).count() / (60 * 60 * 24);
     cout << "Difference: " << days << " days" << endl;
 
     return days;
+}
+
+void Bank::drawInputWindow()
+{
+    bool exit = false;
+    Rectangle UsernameBox = {300, 195, 200, 30};
+    Rectangle PasswordBox = {300, 245, 200, 30};
+    Rectangle Login_Button = {300, 300, 90, 40};
+    Rectangle Exit_Button = {410, 300, 90, 40};
+    static int x = 0;
+
+    while (!exit || WindowShouldClose())
+    {
+        bool mouseOnUsername = CheckCollisionPointRec(GetMousePosition(), UsernameBox);
+        bool username_clicked = false;
+        bool mouseOnPassword = CheckCollisionPointRec(GetMousePosition(), PasswordBox);
+        bool password_clicked=false;
+        bool mouseOnLogin = CheckCollisionPointRec(GetMousePosition(), Login_Button);
+        exit = CheckCollisionPointRec(GetMousePosition(), Exit_Button);
+
+        BeginDrawing();
+
+        if(!username_clicked || !password_clicked){
+            DrawText("Username:", 200, 200, 20, BLACK);
+            DrawRectangleRec(UsernameBox, LIGHTGRAY);
+
+            DrawText("Password:", 200, 250, 20, BLACK);
+            DrawRectangleRec(PasswordBox, LIGHTGRAY);
+
+            DrawRectangleRec(Login_Button, SKYBLUE);
+            DrawText("Login", 320, 310, 20, BLACK);
+
+            DrawRectangleRec(Exit_Button, RED);
+            DrawText("Exit", 440, 310, 20, BLACK);
+        }
+
+        if (mouseOnUsername && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            username_clicked = true;
+        }
+
+        
+        if (username_clicked)
+        {
+            if ((x++) % 2 == 0)
+                DrawText("|", 302, 200, 20, BLACK);
+            else
+                DrawText(" ", 302, 200, 20, BLACK);
+
+            DrawRectangleRec(UsernameBox, LIGHTGRAY);
+        }
+
+        EndDrawing();
+    }
+    return;
 }

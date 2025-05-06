@@ -1,28 +1,36 @@
 #include <iostream>
+#include <cstring>
 #include "User.h"
 
 using namespace std;
 
-// User::User(string u, string pass) : username(u), password(pass) {}
-// User::User() {}
-
-bool User::verifyPass(string pass)
-{
-    return (password == pass) ? true : false;
+User::User(char* u, char* pass){
+    strcpy(username, u);
+    strcpy(password, pass);
 }
 
-string User::getUsername()
+User::User(){}
+
+User::~User(){}
+
+
+bool User::verifyPass(char* pass)
+{
+    return (!strcmp(password, pass)) ? true : false;
+}
+
+char* User::getUsername()
 {
     return username;
 }
 
-string User::getPass()
+char* User::getPass()
 {
     return password;
 }
 
 void User::operator=(User *u)
 {
-    username = u->username;
-    password = u->password;
+    strcpy(username, u->getUsername());
+    strcpy(password, u->getPass());
 }

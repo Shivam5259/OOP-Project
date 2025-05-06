@@ -25,7 +25,8 @@ void Debit_Card::withdraw(Account &a, double amount){
 }
 
 void Credit_Card::returnBorrowedAmount(double amount){
-    string currentDate= getCurrentDate();
+    char* currentDate;
+    strcpy(currentDate, getCurrentDate());
     int days= calculateAge(currentDate, deadline);
     deadline=currentDate;
 

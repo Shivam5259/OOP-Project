@@ -6,22 +6,24 @@ using namespace std;
 
 class User{
 protected:
-    string name;
-    string username;
-    string password;
+    char name[25];
+    char username[25];
+    char password[25];
 
 public:
-    User(string u, string pass) : username(u), password(pass) {}
-    User() {}
+    User(char* u, char* pass);
+    User();
     
 
     virtual void displayMenu()=0;
 
-    bool verifyPass(string pass);
+    bool verifyPass(char* pass);
 
-    string getUsername();
+    char* getUsername();
 
-    string getPass();
+    char* getPass();
 
     void operator=(User *u);
+
+    virtual ~User();
 };
