@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include "Card.h"
+#include "AccountHolder.h"
 
 using namespace std;
 
@@ -28,12 +29,17 @@ class Transaction{
 class Account{
 private:
     double balance;
-    char* acc_number;
-    char* pass;
+    char acc_number[20];
+    char password[20];
     Card *card;
     int cardCount;
 
+    friend class AccountHolder;
+
 public:
+    Account(char *pass);
+    Account(Account* a);
+    void generateAccNumber();
     void withdraw(double amount);
     void transfer(Account &a, double amount);
     void deposit(double amount);

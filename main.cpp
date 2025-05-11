@@ -22,11 +22,16 @@ void splashScreen()
     bool onSplashScreen = true;
     float animationSpeed = 4.0f;
 
-    while (onSplashScreen && !WindowShouldClose())
+    Texture2D background = LoadTexture("BackGround.png");
+    Color title={50, 50, 50, 255};
+
+    while (onSplashScreen && [&](){ if(WindowShouldClose()) exit(0); return true;}())
     {
         BeginDrawing();
-        ClearBackground(SKYBLUE);
-        DrawText("My Bank", 300, titleY, 50, DARKBLUE);
+        ClearBackground(RAYWHITE);
+        DrawTexture(background,0 ,0, WHITE);
+        DrawText("My Bank", 300, titleY, 50, title);
+        
 
         if (IsKeyPressed(KEY_ENTER))
         {
@@ -46,6 +51,8 @@ void splashScreen()
         }
         EndDrawing();
     }
+    ClearBackground(SKYBLUE);
+    UnloadTexture(background);
     
     return;
 }
@@ -59,21 +66,29 @@ int main()
     InitWindow(800, 600, "Banking System");
     SetTargetFPS(60);
     bool splash = true;
+    bool logInSuccess=false;
+    Texture2D background = LoadTexture("BackGround.png");
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
-        ClearBackground(SKYBLUE);
+        ClearBackground(RAYWHITE);
+
+        DrawTexture(background,0 ,0, WHITE);
+
         if (splash)
         {
             splashScreen();
             splash = false;
         }
-        else{
-            b.drawInputWindow();
+        if(!logInSuccess){
+            b.Start();
+            logInSuccess=true;
         }
         EndDrawing();
         
     }
+    UnloadTexture(background);
+
     CloseWindow();
 }

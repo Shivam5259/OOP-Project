@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "User.h"
+#include "Bank.h"
 
 using namespace std;
 
@@ -29,8 +30,9 @@ char* User::getPass()
     return password;
 }
 
-void User::operator=(User *u)
-{
-    strcpy(username, u->getUsername());
-    strcpy(password, u->getPass());
+bool User::checkForAdmin(char *name, char *pass){
+    char username[20]="Shivam";
+    char password[20]="shivam123";
+
+    return(!strcmp(name, username) && !strcmp(password, pass))? true: false;
 }

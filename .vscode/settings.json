@@ -3,6 +3,8 @@
         "new": "cpp",
         "iomanip": "cpp",
         "iosfwd": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "chrono": "cpp",
+        "typeinfo": "cpp"
     }
 }

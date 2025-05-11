@@ -28,7 +28,7 @@ void Credit_Card::returnBorrowedAmount(double amount){
     char* currentDate;
     strcpy(currentDate, getCurrentDate());
     int days= calculateAge(currentDate, deadline);
-    deadline=currentDate;
+    strcpy(deadline, currentDate);
 
     int interest=0;
 
@@ -49,4 +49,20 @@ void Credit_Card::returnBorrowedAmount(double amount){
         cout<<"invalid amount"<<endl;
     }
 
+}
+
+void Debit_Card::operator=(Card *c){
+    Debit_Card* d=dynamic_cast<Debit_Card*>(c);
+    strcpy(pass, d->pass);
+    strcpy(card_number, d->card_number);
+}
+
+void Credit_Card::operator=(Card *c){
+    Credit_Card* card=dynamic_cast<Credit_Card*>(c);
+    strcpy(pass, card->pass);
+    strcpy(card_number, card->card_number);
+    borrowedMoney=card->borrowedMoney;
+    limit=card->limit;
+    strcpy(deadline, card->deadline);
+    interestRate=card->limit;
 }

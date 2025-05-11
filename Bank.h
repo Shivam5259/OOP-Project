@@ -22,22 +22,22 @@ class Bank
 {
 private:
     User *user;
-    // Admin admin;
     const int encryption_key=120;
+    char adminName[20]="Shivam";
+    char adminPassword[20]="shivam123";
 
 
 public:
-    void encrypt_decrypt(char* &s);
+    void encrypt_decrypt(char* s);
+void Start();
 
-    void createAcc();
+    bool log_in(char* name, char* pass);
 
-    void displayMenu();
-
-    void log_in(char* name, char* pass);
-
-    void createAccount();
+    void createAccount(char data[][20], int size, char *type);
 
     void drawInputWindow();
+
+    void drawCreateAccScreen();
 };
 
 #endif

@@ -1,11 +1,22 @@
-#pragma once
+#ifndef ADMIN_H
+#define ADMIN_H
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include "AccountHolder.h"
 #include "User.h"
-using namespace std;
 
-class Admin: public User
-{
+class Admin : public User {
 public:
-    void displayMenu();
+    Admin(char* uname,char* pass);
+    Admin(User *u);
+
+    void viewAllAccounts();
+    void deleteAccount(char*);
+    void approveLoan(char*);
+    void displayMenuScreen();
 };
+
+
+#endif
